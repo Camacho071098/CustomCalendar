@@ -6,7 +6,7 @@
 //
 import SwiftUI
 
-public struct MonthYearPicker: View {
+ public struct MonthYearPicker: View {
     var manager: CalenderManager
     
     @Binding var monthOffset: Int

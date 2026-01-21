@@ -39,3 +39,11 @@ public struct PartialCalendar: View {
         }
     }
 }
+
+#Preview {
+    let cal = Calendar.current
+    let today = Date()
+    let end = cal.date(byAdding: .day, value: 20, to: today) ?? Date()
+    
+    PartialCalendar(selectedDates: .constant([]), startDate: today, endDate: end)
+}

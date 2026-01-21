@@ -5,13 +5,14 @@
 //  Created by Margarida Camacho on 01/11/2024.
 //
 import SwiftUI
+import Combine
 
 class CalenderManager: ObservableObject {
     @Published var selectedDate: Date? = nil
     @Published var disabledDates: [Date] = []
     @Published var holidays: [Date] = []
     @Published var events: [Event] = []
-    @Published public var colors: Colors
+    @Published var colors: Colors
     @Published var disableBeforeTodayDates: Bool
     @Published var selectedDates: [Date] = []
     
@@ -34,9 +35,10 @@ class CalenderManager: ObservableObject {
     var disabledAfterDate: Date?
     var fonts = Fonts()
     var currentDate: Date
+    var indicator: DayIndicator
     var calendarType: CalendarType
     
-    init(selectedDate: Date? = nil, startDate: Date? = nil, endDate: Date? = nil, colors: Colors = Colors(), calendar: Foundation.Calendar = Calendar.current, minimumDate: Date = Date(), maximumDate: Date = Date(), disabledAfterDate: Date? = nil, disableBeforeTodayDates: Bool = true, calendarType: CalendarType = .calendarOne) {
+    init(selectedDate: Date? = nil, startDate: Date? = nil, endDate: Date? = nil, colors: Colors = Colors(), calendar: Foundation.Calendar = Calendar.current, minimumDate: Date = Date(), maximumDate: Date = Date(), disabledAfterDate: Date? = nil, disableBeforeTodayDates: Bool = true, indicator: DayIndicator = .none, calendarType: CalendarType = .calendarOne) {
         self.selectedDate = selectedDate
         self.startDate = startDate
         self.endDate = endDate
@@ -50,6 +52,7 @@ class CalenderManager: ObservableObject {
         self.disableBeforeTodayDates = disableBeforeTodayDates
         
         self.currentDate = minimumDate
+        self.indicator = indicator
         self.calendarType = calendarType
         
         updateSelectedDates()
@@ -57,7 +60,7 @@ class CalenderManager: ObservableObject {
     
     var cellSize: CGFloat {
         switch calendarType {
-        case .calendarOne, .partialCalendar:
+        case .calendarOne, .partialCalendar, .weekCalendar:
             return 32
         case .calendarTwo:
             return 40
