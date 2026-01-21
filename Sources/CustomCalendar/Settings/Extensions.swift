@@ -271,6 +271,7 @@ extension Month {
                         ),
                         cellSize: manager.cellSize
                     )
+                    .onTapGesture { manager.tapDelegate?.didTapDate(date) }
                 }
             }
             else {
