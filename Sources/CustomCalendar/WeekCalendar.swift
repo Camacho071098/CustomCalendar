@@ -39,6 +39,7 @@ public struct WeekCalendar: View {
         }
         .background(manager.colors.backgroundColor)
         .gesture(drag)
+        .onAppear { syncWeekOffsetToSelectedDate() }
     }
     
     var drag: some Gesture {
@@ -60,6 +61,22 @@ public struct WeekCalendar: View {
                     }
                 }
             }
+    }
+    
+    private func syncWeekOffsetToSelectedDate() {
+        guard let selected = selectedDate else { return }
+
+        let cal = manager.calendar
+        let anchor = manager.startDate ?? Date()
+
+        let anchorWeekStart = cal.dateInterval(of: .weekOfYear, for: anchor)?.start ?? cal.startOfDay(for: anchor)
+        let selectedWeekStart = cal.dateInterval(of: .weekOfYear, for: selected)?.start ?? cal.startOfDay(for: selected)
+
+        let diff = cal.dateComponents([.weekOfYear], from: anchorWeekStart, to: selectedWeekStart).weekOfYear ?? 0
+
+        if weekOffset != diff {
+            weekOffset = diff
+        }
     }
 }
 
