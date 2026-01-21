@@ -4,14 +4,6 @@
 //
 //  Created by Margarida Camacho on 20/11/2024.
 //
-import SwiftUI
-
 public enum CalendarType {
-    case calendarOne, calendarTwo, partialCalendar, weekCalendar
-}
-
-public enum DayIndicator {
-    case none
-    case one(Color)
-    case two(Color, Color)
+    case calendarOne, calendarTwo, partialCalendar
 }

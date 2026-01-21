@@ -18,7 +18,7 @@ extension Color {
     }
 }
 
- public class Colors {
+public class Colors {
     //MARK: - Text Colors
     var normalTextColor: Color = .black
     var selectedTextColor = Color(hex: 0xBC0A79)

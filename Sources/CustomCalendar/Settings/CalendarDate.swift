@@ -45,10 +45,6 @@ struct CalendarDate {
         date == startDate
     }
     
-    var isWeekCalendar: Bool {
-        manager.calendarType == .weekCalendar
-    }
-    
     var font: Font {
         if isSelected { return manager.fonts.selectedTextFont }
         
@@ -61,7 +57,7 @@ struct CalendarDate {
     }
     
     func getTextColor() -> Color {
-        if (isSelected || isToday) || !isWeekCalendar { return manager.colors.selectedTextColor }
+        if isSelected || isToday { return manager.colors.selectedTextColor }
         else if isWeekend { return manager.colors.weekendTextColor }
         else if isHoliday { return manager.colors.holidayTextColor }
         else if isAbsence { return manager.colors.absenceTextColor }

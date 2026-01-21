@@ -45,13 +45,6 @@ struct DayCell: View {
 
             }
             .frame(height: cellSize * 1.8)
-            
-        case .weekCalendar:
-            Text(calendarDate.getText())
-                .frame(width: cellSize, height: cellSize)
-                .foregroundStyle(calendarDate.getTextColor())
-                .font(calendarDate.font)
-            
         default:
             let event = calendarDate.events.first
             
@@ -68,6 +61,8 @@ struct DayCell: View {
         }
     }
 }
+
+
 
 /*#Preview {
     Group {
