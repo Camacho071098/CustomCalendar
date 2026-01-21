@@ -45,6 +45,10 @@ struct CalendarDate {
         date == startDate
     }
     
+    var isWeekCalendar: Bool {
+        manager.calendarType == .weekCalendar
+    }
+    
     var font: Font {
         if isSelected { return manager.fonts.selectedTextFont }
         
