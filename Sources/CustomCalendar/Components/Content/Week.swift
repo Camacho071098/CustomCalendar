@@ -24,14 +24,14 @@ struct Week: View {
         let offsetAnchor = cal.date(byAdding: .weekOfYear, value: weekOffset, to: startDate) ?? startDate
         let startOfWeek = cal.dateInterval(of: .weekOfYear, for: offsetAnchor)?.start ?? offsetAnchor
         
-        let displayMonth = cal.component(.month, from: offsetAnchor)
+        let displayYear = cal.component(.year, from: offsetAnchor)
         
         return (0..<daysPerWeek).map { day in
             guard let d = cal.date(byAdding: .day, value: day, to: startOfWeek) else { return nil }
             
-            let m = cal.component(.month, from: d)
+            let y = cal.component(.year, from: d)
             
-            return (m == displayMonth) ? d : nil
+            return (y == displayYear) ? d : nil
         }
     }
     
