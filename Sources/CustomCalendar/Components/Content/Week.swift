@@ -69,6 +69,9 @@ struct Week: View {
                                 DotIndicator(indicator: indicators[weekDay] ?? .none)
                             }
                         }
+                        else {
+                            Text("").frame(maxWidth: .infinity, alignment: .center)
+                        }
                     }
                 }
             }
