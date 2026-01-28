@@ -20,11 +20,19 @@ struct Week: View {
     private var weekDays: [Date] {
         let cal = manager.calendar
         let startDate = manager.startDate ?? Date()
-        
-        let offsetAnchor = cal.date(byAdding: .weekOfYear, value: weekOffset, to: startDate) ?? startDate
-        let startOfWeek = cal.dateInterval(of: .weekOfYear, for: offsetAnchor)?.start ?? offsetAnchor
-        
-        return (0..<daysPerWeek).compactMap { day in cal.date(byAdding: .day, value: day, to: startOfWeek) }
+
+        let anchorWeekStart =
+            cal.dateInterval(of: .weekOfYear, for: startDate)?.start
+            ?? cal.startOfDay(for: startDate)
+
+        let startOfWeek =
+            cal.date(byAdding: .weekOfYear, value: weekOffset, to: anchorWeekStart)
+            ?? anchorWeekStart
+
+        return (0..<daysPerWeek).compactMap { day in
+            guard let d = cal.date(byAdding: .day, value: day, to: startOfWeek) else { return nil }
+            return cal.startOfDay(for: d)
+        }
     }
     
     init(manager: CalenderManager, isLoading: Binding<Bool>, indicators: [Date: DayIndicator], weekOffset: Int, selectedDate: Binding<Date?>) {
