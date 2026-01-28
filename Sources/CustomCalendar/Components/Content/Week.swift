@@ -17,21 +17,21 @@ struct Week: View {
     private let indicators: [Date: DayIndicator]
     private let weekOffset: Int
     
-    private var weekDays: [Date] {
+    private var weekDays: [Date?] {
         let cal = manager.calendar
         let startDate = manager.startDate ?? Date()
-
-        let anchorWeekStart =
-            cal.dateInterval(of: .weekOfYear, for: startDate)?.start
-            ?? cal.startOfDay(for: startDate)
-
-        let startOfWeek =
-            cal.date(byAdding: .weekOfYear, value: weekOffset, to: anchorWeekStart)
-            ?? anchorWeekStart
-
-        return (0..<daysPerWeek).compactMap { day in
+        
+        let offsetAnchor = cal.date(byAdding: .weekOfYear, value: weekOffset, to: startDate) ?? startDate
+        let startOfWeek = cal.dateInterval(of: .weekOfYear, for: offsetAnchor)?.start ?? offsetAnchor
+        
+        let displayMonth = cal.component(.month, from: offsetAnchor)
+        
+        return (0..<daysPerWeek).map { day in
             guard let d = cal.date(byAdding: .day, value: day, to: startOfWeek) else { return nil }
-            return cal.startOfDay(for: d)
+            
+            let m = cal.component(.month, from: d)
+            
+            return (m == displayMonth) ? d : nil
         }
     }
     
@@ -50,22 +50,24 @@ struct Week: View {
             
             else {
                 HStack {
-                    ForEach(weekDays, id: \.self) { weekDay in
-                        VStack(spacing: 2) {
-                            DayCell(
-                                calendarDate: CalendarDate(
-                                    date: weekDay,
-                                    manager: manager,
-                                    isSelected: manager.calendar.isDate(selectedDate ?? Date(), inSameDayAs: weekDay)
-                                ),
-                                cellSize: manager.cellSize
-                            )
-                            .onTapGesture {
-                                selectedDate = weekDay
-                                manager.tapDelegate?.didTapDate(weekDay)
+                    ForEach(weekDays.indices, id: \.self) { index in
+                        if let weekDay = weekDays[index] {
+                            VStack(spacing: 2) {
+                                DayCell(
+                                    calendarDate: CalendarDate(
+                                        date: weekDay,
+                                        manager: manager,
+                                        isSelected: manager.calendar.isDate(selectedDate ?? Date(), inSameDayAs: weekDay)
+                                    ),
+                                    cellSize: manager.cellSize
+                                )
+                                .onTapGesture {
+                                    selectedDate = weekDay
+                                    manager.tapDelegate?.didTapDate(weekDay)
+                                }
+                                
+                                DotIndicator(indicator: indicators[weekDay] ?? .none)
                             }
-                            
-                            DotIndicator(indicator: indicators[weekDay] ?? .none)
                         }
                     }
                 }
