@@ -15,33 +15,29 @@ struct Week: View {
     
     private let daysPerWeek = 7
     private let indicators: [Date: DayIndicator]
-    private let weekOffset: Int
     
     private var weekDays: [Date?] {
         let cal = manager.calendar
-        let startDate = manager.startDate ?? Date()
+        let base = selectedDate ?? Date()
         
-        let offsetAnchor = cal.date(byAdding: .weekOfYear, value: weekOffset, to: startDate) ?? startDate
-        let startOfWeek = cal.dateInterval(of: .weekOfYear, for: offsetAnchor)?.start ?? offsetAnchor
+        guard let weekInterval = cal.dateInterval(of: .weekOfYear, for: base) else { return Array(repeating: nil, count: daysPerWeek) }
         
-        let displayYear = cal.component(.year, from: offsetAnchor)
+        let baseComponents = cal.dateComponents([.year, .month], from: base)
         
-        return (0..<daysPerWeek).map { day in
-            guard let d = cal.date(byAdding: .day, value: day, to: startOfWeek) else { return nil }
+        return (0..<daysPerWeek).map { offset in
+            guard let day = cal.date(byAdding: .day, value: offset, to: weekInterval.start) else { return nil }
             
-            let y = cal.component(.year, from: d)
-            
-            return (y == displayYear) ? d : nil
+            let dayComponents = cal.dateComponents([.year, .month], from: day)
+            return ((dayComponents.year == baseComponents.year) && (dayComponents.month == baseComponents.month)) ? day : nil
         }
     }
     
-    init(manager: CalenderManager, isLoading: Binding<Bool>, indicators: [Date: DayIndicator], weekOffset: Int, selectedDate: Binding<Date?>) {
+    init(manager: CalenderManager, isLoading: Binding<Bool>, indicators: [Date: DayIndicator], selectedDate: Binding<Date?>) {
         _manager = StateObject(wrappedValue: manager)
         _isLoading = isLoading
         _selectedDate = selectedDate
         
         self.indicators = indicators
-        self.weekOffset = weekOffset
     }
 
     var body: some View {

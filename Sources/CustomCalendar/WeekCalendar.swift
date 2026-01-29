@@ -14,13 +14,10 @@ public struct WeekCalendar: View {
     @Binding var indicators: [Date: DayIndicator]
     @Binding var selectedDate: Date?
     
-    @Binding private var weekOffset: Int
-    
-    public init(isLoading: Binding<Bool>, colors: Colors = Colors(), selectedDate: Binding<Date?>, weekOffset: Binding<Int>, startDate: Date = Date(), indicators: Binding<[Date: DayIndicator]>, onTap: ((Date) -> Void)? = nil) {
+    public init(isLoading: Binding<Bool>, colors: Colors = Colors(), selectedDate: Binding<Date?>, startDate: Date = Date(), indicators: Binding<[Date: DayIndicator]>, onTap: ((Date) -> Void)? = nil) {
         _isLoading = isLoading
         _indicators = indicators
         _selectedDate = selectedDate
-        _weekOffset = weekOffset
         
         let manager = CalenderManager(
             startDate: startDate,
@@ -35,48 +32,9 @@ public struct WeekCalendar: View {
         VStack(alignment: .leading, spacing: 8) {
             Weekday(manager: manager)
             
-            Week(manager: manager, isLoading: $isLoading, indicators: indicators, weekOffset: weekOffset, selectedDate: $selectedDate)
+            Week(manager: manager, isLoading: $isLoading, indicators: indicators, selectedDate: $selectedDate)
         }
         .background(manager.colors.backgroundColor)
-        .gesture(drag)
-        .onAppear { syncWeekOffsetToSelectedDate() }
-    }
-    
-    var drag: some Gesture {
-        DragGesture()
-            .onEnded { value in
-                let horizontal = abs(value.translation.width)
-                let vertical = abs(value.translation.height)
-                
-                guard horizontal > vertical else { return }
-                
-                withAnimation {
-                    // Swipe right
-                    if value.translation.width > 0 {
-                        weekOffset -= 1
-                    }
-                    // Swipe left
-                    else if value.translation.width < 0 {
-                        weekOffset += 1
-                    }
-                }
-            }
-    }
-    
-    private func syncWeekOffsetToSelectedDate() {
-        guard let selected = selectedDate else { return }
-
-        let cal = manager.calendar
-        let anchor = manager.startDate ?? Date()
-
-        let anchorWeekStart = cal.dateInterval(of: .weekOfYear, for: anchor)?.start ?? cal.startOfDay(for: anchor)
-        let selectedWeekStart = cal.dateInterval(of: .weekOfYear, for: selected)?.start ?? cal.startOfDay(for: selected)
-
-        let diff = cal.dateComponents([.weekOfYear], from: anchorWeekStart, to: selectedWeekStart).weekOfYear ?? 0
-
-        if weekOffset != diff {
-            weekOffset = diff
-        }
     }
 }
 
@@ -136,7 +94,6 @@ private struct WeekPreviewDark: View {
                 isLoading: .constant(false),
                 colors: Colors(),
                 selectedDate: .init(projectedValue: $selectedDate),
-                weekOffset: .constant(0),
                 startDate: d(0),
                 indicators: .constant(indicators),
                 onTap: { date in
