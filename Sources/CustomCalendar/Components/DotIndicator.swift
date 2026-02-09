@@ -9,7 +9,7 @@ import SwiftUI
 struct DotIndicator: View {
     let indicator: DayIndicator
     
-    private let dotSize: CGFloat = 24
+    private let dotSize: CGFloat = 16
     
     var body: some View {
         switch indicator {

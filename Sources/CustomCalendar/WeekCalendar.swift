@@ -14,6 +14,19 @@ public struct WeekCalendar: View {
     @Binding var indicators: [Date: DayIndicator]
     @Binding var selectedDate: Date?
     
+    private var monthOffset: Int {
+        let currentDate = manager.calendar.dateComponents([.year, .month], from: Date())
+        let selectedDate = manager.calendar.dateComponents([.year, .month], from: selectedDate ?? Date())
+        
+        let currentYear = currentDate.year ?? 0
+        let currentMonth = currentDate.month ?? 1
+        
+        let selectedYear = selectedDate.year ?? 0
+        let selectedMonth = selectedDate.month ?? 1
+        
+        return ((selectedYear - currentYear) * 12) + (selectedMonth - currentMonth)
+    }
+    
     public init(isLoading: Binding<Bool>, colors: Colors = Colors(), selectedDate: Binding<Date?>, startDate: Date = Date(), indicators: Binding<[Date: DayIndicator]>, onTap: ((Date) -> Void)? = nil) {
         _isLoading = isLoading
         _indicators = indicators
@@ -30,6 +43,10 @@ public struct WeekCalendar: View {
     
     public var body: some View {
         VStack(alignment: .leading, spacing: 8) {
+            Text(manager.monthHeader(monthOffset: monthOffset))
+                .font(manager.fonts.headerTextFont)
+                .foregroundStyle(manager.colors.normalTextColor)
+            
             Weekday(manager: manager)
             
             Week(manager: manager, isLoading: $isLoading, indicators: indicators, selectedDate: $selectedDate)

@@ -60,10 +60,8 @@ class CalenderManager: ObservableObject {
     
     var cellSize: CGFloat {
         switch calendarType {
-        case .calendarOne, .partialCalendar, .weekCalendar:
-            return 32
-        case .calendarTwo:
-            return 40
+        case .calendarOne, .partialCalendar, .weekCalendar: return 32
+        case .calendarTwo: return 40
         }
     }
     
