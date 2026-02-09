@@ -32,12 +32,10 @@ import SwiftUI
         ZStack {
             // Background with opacity
             Color.black.opacity(0.5)
-                .onChange(of: monthOffset) { newValue in
-                    isPresented = false
-                }
-                .onTapGesture {
-                    updateMonthOffset()
-                }
+//                .onChange(of: monthOffset) { newValue in
+//                    isPresented = false
+//                }
+//                .onTapGesture { updateMonthOffset() }
             
             // Pickers
             VStack {
@@ -62,6 +60,18 @@ import SwiftUI
                     .clipShape(.rect.offset(x: 16))
                     .padding(.leading, -16)
                 }
+                
+                HStack(spacing: 0) {
+                    Button("Cancelar") { isPresented = false }
+                        .frame(maxWidth: .infinity)
+                        .foregroundStyle(manager.colors.pickerButtonTextColor)
+                    
+                    Button("Ok") { updateMonthOffset() }
+                        .frame(maxWidth: .infinity)
+                        .foregroundStyle(manager.colors.pickerButtonTextColor)
+                        .fontWeight(.semibold)
+                }
+                .padding()
             }
             .background(manager.colors.pickerBackColor)
             .frame(maxWidth: 300)
