@@ -94,7 +94,8 @@ import SwiftUI
         let newOffset = (yearDiff * 12) + monthDiff
         
         if newOffset != monthOffset { monthOffset = newOffset }
-        else { isPresented = false }
+//        else { isPresented = false }
+        isPresented = false
     }
     
     private func firstDateMonth() -> Date {
