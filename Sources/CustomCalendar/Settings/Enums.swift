@@ -15,3 +15,7 @@ public enum DayIndicator {
     case one(Color)
     case two(Color, Color)
 }
+
+public enum MonthHeaderStyle {
+    case full, short
+}

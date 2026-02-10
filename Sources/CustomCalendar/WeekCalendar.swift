@@ -43,9 +43,10 @@ public struct WeekCalendar: View {
     
     public var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text(manager.monthHeader(monthOffset: monthOffset))
+            Text(manager.monthHeader(monthOffset: monthOffset, style: .short))
                 .font(manager.fonts.headerTextFont)
                 .foregroundStyle(manager.colors.normalTextColor)
+                .padding(.bottom)
             
             Weekday(manager: manager, selectedDate: $selectedDate)
             

@@ -100,12 +100,18 @@ class CalenderManager: ObservableObject {
         return calendar.date(byAdding: offsetComponent, to: firstDateMonth())!
     }
     
-    func monthHeader(monthOffset: Int) -> String {
+    func monthHeader(monthOffset: Int, style: MonthHeaderStyle = .full) -> String {
         let date = calendar.date(byAdding: .month, value: monthOffset, to: Date())!
-        let month = calendar.component(.month, from: date)
+        let monthIndex = calendar.component(.month, from: date) - 1
         let year = calendar.component(.year, from: date)
+        let monthName: String
         
-        return "\(calendar.monthSymbols[month - 1]) \(year)"
+        switch style {
+        case .full: monthName = calendar.monthSymbols[monthIndex]
+        case .short: monthName = calendar.shortMonthSymbols[monthIndex]
+        }
+        
+        return "\(monthName) \(year)"
     }
     
     func updateCurrentDate(monthOffset: Int) {
