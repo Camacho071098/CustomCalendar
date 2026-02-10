@@ -43,7 +43,7 @@ extension Month {
         let firstOfMonth = firstOfMonthOffset()
         let rangeOfWeeks = manager.calendar.range(of: .weekOfMonth, in: .month, for: firstOfMonth)
         
-        return (rangeOfWeeks?.count)! * daysPerWeek
+        return (rangeOfWeeks?.count)! * manager.daysPerWeek
     }
     
     func isStartDate(date: Date) -> Bool {
@@ -152,7 +152,7 @@ extension Month {
         let weekday = manager.calendar.component(.weekday, from: firstOfMonth)
         
         var startOffset = weekday - manager.calendar.firstWeekday
-        startOffset += startOffset >= 0 ? 0 : daysPerWeek
+        startOffset += startOffset >= 0 ? 0 : manager.daysPerWeek
         
         var components = DateComponents()
         components.day = index - startOffset
@@ -163,11 +163,11 @@ extension Month {
     func monthArray() -> [[Date]] {
         var rowArray = [[Date]]()
         
-        for row in 0..<(numberOfDays(offset: monthOffset) / daysPerWeek) {
+        for row in 0..<(numberOfDays(offset: monthOffset) / manager.daysPerWeek) {
             var columnArray = [Date]()
             
-            for column in 0...(daysPerWeek - 1) {
-                let cell = getDateAtIndex(index: (row * daysPerWeek) + column)
+            for column in 0...(manager.daysPerWeek - 1) {
+                let cell = getDateAtIndex(index: (row * manager.daysPerWeek) + column)
                 columnArray.append(cell)
             }
             
@@ -183,7 +183,7 @@ extension Month {
             let endDate = endDate else { return []}
         
         var weeks = [[Date]]()
-        var currentWeek: [Date] = Array(repeating: Date.distantPast, count: daysPerWeek)
+        var currentWeek: [Date] = Array(repeating: Date.distantPast, count: manager.daysPerWeek)
         let calendar = manager.calendar
 
         var current = startDate
@@ -191,18 +191,18 @@ extension Month {
 
         // Descobre o índice de início da primeira data
         let startWeekday = calendar.component(.weekday, from: current)
-        let startIndex = (startWeekday - calendar.firstWeekday + daysPerWeek) % daysPerWeek
+        let startIndex = (startWeekday - calendar.firstWeekday + manager.daysPerWeek) % manager.daysPerWeek
         var indexInWeek = startIndex
 
         while current <= endDay {
             let weekday = calendar.component(.weekday, from: current)
             
-            currentWeek[indexInWeek] = ((weekday != 1) && (weekday != daysPerWeek)) ? current : Date.distantPast
+            currentWeek[indexInWeek] = ((weekday != 1) && (weekday != manager.daysPerWeek)) ? current : Date.distantPast
             indexInWeek += 1
             
-            if indexInWeek == daysPerWeek {
+            if indexInWeek == manager.daysPerWeek {
                 weeks.append(currentWeek)
-                currentWeek = Array(repeating: Date.distantPast, count: daysPerWeek)
+                currentWeek = Array(repeating: Date.distantPast, count: manager.daysPerWeek)
                 indexInWeek = 0
             }
             

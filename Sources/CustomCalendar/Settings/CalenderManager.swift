@@ -37,8 +37,9 @@ class CalenderManager: ObservableObject {
     var currentDate: Date
     var indicator: DayIndicator
     var calendarType: CalendarType
+    var daysPerWeek: Int
     
-    init(selectedDate: Date? = nil, startDate: Date? = nil, endDate: Date? = nil, colors: Colors = Colors(), calendar: Foundation.Calendar = Calendar.current, minimumDate: Date = Date(), maximumDate: Date = Date(), disabledAfterDate: Date? = nil, disableBeforeTodayDates: Bool = true, indicator: DayIndicator = .none, calendarType: CalendarType = .calendarOne) {
+    init(selectedDate: Date? = nil, startDate: Date? = nil, endDate: Date? = nil, colors: Colors = Colors(), calendar: Foundation.Calendar = Calendar.current, minimumDate: Date = Date(), maximumDate: Date = Date(), disabledAfterDate: Date? = nil, disableBeforeTodayDates: Bool = true, indicator: DayIndicator = .none, daysPerWeek: Int = 7, calendarType: CalendarType = .calendarOne) {
         self.selectedDate = selectedDate
         self.startDate = startDate
         self.endDate = endDate
@@ -53,6 +54,7 @@ class CalenderManager: ObservableObject {
         
         self.currentDate = minimumDate
         self.indicator = indicator
+        self.daysPerWeek = daysPerWeek
         self.calendarType = calendarType
         
         updateSelectedDates()

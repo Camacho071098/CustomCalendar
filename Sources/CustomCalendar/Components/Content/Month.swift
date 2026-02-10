@@ -13,7 +13,6 @@ struct Month: View {
     @Binding var isLoading: Bool
     
     let monthOffset: Int
-    let daysPerWeek = 7
     let calendarUnitYMD = Set<Calendar.Component>([.year, .month, .day])
     
     var monthsArray: [[Date]] {

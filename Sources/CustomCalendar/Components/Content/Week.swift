@@ -13,18 +13,17 @@ struct Week: View {
     @Binding var isLoading: Bool
     @Binding var selectedDate: Date?
     
-    private let daysPerWeek = 7
     private let indicators: [Date: DayIndicator]
     
     private var weekDays: [Date?] {
         let cal = manager.calendar
         let base = selectedDate ?? Date()
         
-        guard let weekInterval = cal.dateInterval(of: .weekOfYear, for: base) else { return Array(repeating: nil, count: daysPerWeek) }
+        guard let weekInterval = cal.dateInterval(of: .weekOfYear, for: base) else { return Array(repeating: nil, count: manager.daysPerWeek) }
         
         let baseComponents = cal.dateComponents([.year, .month], from: base)
         
-        return (0..<daysPerWeek).map { offset in
+        return (0..<manager.daysPerWeek).map { offset in
             guard let day = cal.date(byAdding: .day, value: offset, to: weekInterval.start) else { return nil }
             
             let dayComponents = cal.dateComponents([.year, .month], from: day)
@@ -45,7 +44,7 @@ struct Week: View {
             if isLoading { ProgressView() }
             
             else {
-                HStack {
+                HStack(alignment: .center, spacing: 0) {
                     ForEach(weekDays.indices, id: \.self) { index in
                         if let weekDay = weekDays[index] {
                             VStack(spacing: 2) {

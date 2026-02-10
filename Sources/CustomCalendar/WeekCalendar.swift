@@ -47,39 +47,13 @@ public struct WeekCalendar: View {
                 .font(manager.fonts.headerTextFont)
                 .foregroundStyle(manager.colors.normalTextColor)
             
-            Weekday(manager: manager)
+            Weekday(manager: manager, selectedDate: $selectedDate)
             
             Week(manager: manager, isLoading: $isLoading, indicators: indicators, selectedDate: $selectedDate)
         }
         .background(manager.colors.backgroundColor)
     }
 }
-
-/*#Preview {
-    let cal = Calendar.current
-    let today = Date()
-
-    func d(_ offset: Int) -> Date {
-        cal.startOfDay(for: cal.date(byAdding: .day, value: offset, to: today)!)
-    }
-
-    let indicators: [Date: DayIndicator] = [
-        d(0): .one(.green),
-        d(1): .two(.red, .blue),
-        d(3): .one(.orange),
-        d(4): .two(.purple, .pink)
-    ]
-
-    return WeekCalendar(
-        isLoading: .constant(false),
-        colors: Colors(),
-        startDate: d(0),
-        indicators: .constant(indicators),
-        onTap: { date in
-            print("Tapped:", date)
-        }
-    )
-}*/
 
 #Preview {
     WeekPreviewDark(selectedDate: .constant(Date()))
