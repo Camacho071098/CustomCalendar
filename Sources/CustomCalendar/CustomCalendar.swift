@@ -48,7 +48,6 @@ public struct CustomCalendar: View {
                 Weekday(manager: manager)
                 
                 Month(manager: manager, isLoading: $isLoading, monthOffset: monthOffset)
-//                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
                 
             }
             .onChange(of: monthOffset) { offset in

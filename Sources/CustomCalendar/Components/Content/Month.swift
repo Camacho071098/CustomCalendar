@@ -20,26 +20,18 @@ struct Month: View {
     }
     
     var body: some View {
-        VStack {
-            if isLoading {
-                ProgressView().frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-            }
-            
-            else {
-                VStack(spacing: 10) {
-                    VStack(alignment: .leading, spacing: 5) {
-                        ForEach(monthsArray, id: \.self) { row in
-                            HStack(spacing: 0) {
-                                ForEach(row, id: \.self) { cell in
-                                    cellView(cell)
-                                }
-                            }
-                        }
+        VStack(alignment: .leading, spacing: 5) {
+            ForEach(monthsArray, id: \.self) { row in
+                HStack(spacing: 0) {
+                    ForEach(row, id: \.self) { cell in
+                        cellView(cell)
                     }
                 }
             }
         }
         .background(manager.colors.backgroundColor)
+        .opacity(isLoading ? 0 : 1)
+        .overlay(alignment: .center) { if isLoading { ProgressView() }}
         .onChange(of: manager.selectedDates) { _ in
             if manager.selectedDates.isEmpty { isStartDate = true }
         }
