@@ -22,7 +22,7 @@ struct Month: View {
     var body: some View {
         VStack {
             if isLoading {
-                ProgressView()
+                ProgressView().frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
             }
             
             else {
