@@ -35,6 +35,7 @@ struct Month: View {
         .onChange(of: manager.selectedDates) { _ in
             if manager.selectedDates.isEmpty { isStartDate = true }
         }
+        .onChange(of: manager.events) { _ in }
     }
 }
 
