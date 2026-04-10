@@ -239,7 +239,7 @@ extension Month {
                 }
             }
             else if isThisMonth(date: date) {
-                if manager.calendarType == .calendarOne {
+                if (manager.calendarType == .calendarOne) || (manager.calendarType == .calendarThree) {
                     DayCell(
                         calendarDate: CalendarDate(
                             date: date,

@@ -107,5 +107,16 @@ class CalendarTapHandler: CalendarTapDelegate {
 }
 
 #Preview {
-    CustomCalendar(monthOffset: .constant(0), isPickerPresented: .constant(false), isLoading: .constant(true), shouldClearData: .constant(true), currentDate: .constant(Date()), selectedDates: .constant([]), eventList: .constant([]))
+    CustomCalendar(
+        monthOffset: .constant(0),
+        isPickerPresented: .constant(false),
+        isLoading: .constant(false),
+        shouldClearData: .constant(true),
+        currentDate: .constant(Date()),
+        selectedDates: .constant([]),
+        eventList: .constant([
+            
+        ]),
+        calendarType: .calendarThree
+    )
 }

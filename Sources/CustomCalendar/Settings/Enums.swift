@@ -7,7 +7,7 @@
 import SwiftUI
 
 public enum CalendarType {
-    case calendarOne, calendarTwo, partialCalendar, weekCalendar
+    case calendarOne, calendarTwo, calendarThree, partialCalendar, weekCalendar
 }
 
 public enum DayIndicator {

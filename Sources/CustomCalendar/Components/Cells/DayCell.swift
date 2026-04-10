@@ -52,6 +52,18 @@ struct DayCell: View {
                 .foregroundStyle(calendarDate.getTextColor())
                 .font(calendarDate.font)
             
+        case .calendarThree:
+            let event = calendarDate.events.first
+            
+            Text(calendarDate.getText())
+                .frame(width: cellSize, height: cellSize)
+                .foregroundStyle(event?.style.textColor ?? calendarDate.getTextColor())
+                .font(calendarDate.font)
+                .frame(maxWidth: .infinity, alignment: .center)
+                .background(event?.style.backgroundColor ?? calendarDate.getBackColor())
+                .clipShape(calendarDate.getShape())
+                .overlay { event?.style.borderStyle }
+            
         default:
             let event = calendarDate.events.first
             
