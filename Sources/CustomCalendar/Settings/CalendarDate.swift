@@ -90,4 +90,13 @@ struct CalendarDate {
         
         return AnyShape(RoundedRectangle(cornerRadius: 8))
     }
+    
+    func getShape() -> some Shape {
+        if isStartDate && isEndDate { return AnyShape(Circle()) }
+        else if isStartDate { return AnyShape(UnevenRoundedRectangle(topLeadingRadius: 50, bottomLeadingRadius: 50)) }
+        else if isEndDate { return AnyShape(UnevenRoundedRectangle(bottomTrailingRadius: 50, topTrailingRadius: 50)) }
+        else if isBetween { return AnyShape(Rectangle()) }
+        
+        return AnyShape(Circle())
+    }
 }
