@@ -11,7 +11,6 @@ class CalenderManager: ObservableObject {
     @Published var selectedDate: Date? = nil
     @Published var disabledDates: [Date] = []
     @Published var holidays: [Date] = []
-    @Published var events: [Event] = []
     @Published var colors: Colors
     @Published var disableBeforeTodayDates: Bool
     @Published var selectedDates: [Date] = []
@@ -22,6 +21,12 @@ class CalenderManager: ObservableObject {
         }
     }
     @Published var endDate: Date? = nil {
+        didSet {
+            if calendarType != .partialCalendar { updateSelectedDates() }
+        }
+    }
+    
+    @Published var events: [Event] = [] {
         didSet {
             if calendarType != .partialCalendar { updateSelectedDates() }
         }
@@ -86,6 +91,12 @@ class CalenderManager: ObservableObject {
         }
     }
     
+    func eventsContains(date: Date) -> Bool {
+        return events.contains { event in
+            calendar.isDate(event.date, inSameDayAs: date)
+        }
+    }
+    
     func firstDateMonth() -> Date {
         var components = calendar.dateComponents([.year, .month, .day], from: minimumDate)
         components.day = 1
@@ -129,7 +140,11 @@ class CalenderManager: ObservableObject {
             
             if let endDate = endDate {
                 while currentDate <= endDate {
-                    if !calendar.isDateInWeekend(currentDate) && !disabledDatesContains(date: currentDate) && !holidaysContains(date: currentDate) {
+                    if !calendar.isDateInWeekend(currentDate)
+                        && !disabledDatesContains(date: currentDate)
+                        && !holidaysContains(date: currentDate)
+                        && !eventsContains(date: currentDate)
+                    {
                         selectedDates.append(currentDate)
                     }
                     currentDate = calendar.date(byAdding: .day, value: 1, to: currentDate)!
@@ -137,7 +152,11 @@ class CalenderManager: ObservableObject {
             }
             
             else {
-                if !calendar.isDateInWeekend(currentDate) && !disabledDatesContains(date: currentDate) && !holidaysContains(date: currentDate) {
+                if !calendar.isDateInWeekend(currentDate)
+                    && !disabledDatesContains(date: currentDate)
+                    && !holidaysContains(date: currentDate)
+                    && !eventsContains(date: currentDate)
+                {
                     selectedDates.append(currentDate)
                 }
             }
