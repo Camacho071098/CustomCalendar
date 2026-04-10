@@ -55,14 +55,57 @@ struct DayCell: View {
         case .calendarThree:
             let event = calendarDate.events.first
             
-            Text(calendarDate.getText())
-                .frame(width: cellSize, height: cellSize)
-                .foregroundStyle(event?.style.textColor ?? calendarDate.getTextColor())
-                .font(calendarDate.font)
-                .frame(maxWidth: .infinity, alignment: .center)
-                .background(event?.style.backgroundColor ?? calendarDate.getBackColor())
-                .clipShape(calendarDate.getShape())
-                .overlay { event?.style.borderStyle }
+            let isRangeEdge = calendarDate.isStartDate || calendarDate.isEndDate
+            let isInRange = calendarDate.isBetween || isRangeEdge
+            let isOnlyStartDate = calendarDate.isStartDate && !calendarDate.isEndDate
+            let isOnlyEndDate = calendarDate.isEndDate && !calendarDate.isStartDate
+            
+            let isBetween = calendarDate.isBetween && !isRangeEdge
+            let hasRange = (calendarDate.startDate != nil) && (calendarDate.endDate != nil)
+            
+            GeometryReader { geo in
+                let w = geo.size.width
+                let h = geo.size.height
+                let halfW = w / 2
+                
+                ZStack(alignment: .center) {
+                    if isInRange && hasRange {
+                        ///Left Half
+                        Rectangle()
+                            .fill(isOnlyStartDate ? Color.clear : calendarDate.manager.colors.betweenBackColor)
+                            .frame(width: halfW, height: h)
+                            .offset(x: -halfW / 2)
+                        
+                        ///Right half
+                        Rectangle()
+                            .fill(isOnlyEndDate ? Color.clear : calendarDate.manager.colors.betweenBackColor)
+                            .frame(width: halfW, height: h)
+                            .offset(x: halfW / 2)
+                    }
+                    
+                    ///Day circle on top
+                    if isBetween {
+                        ///Between dates: without clipShape  and background color
+                        Text(calendarDate.getText())
+                            .foregroundStyle(calendarDate.getTextColor())
+                            .font(calendarDate.font)
+                            .frame(width: w, height: h)
+                    }
+                    else {
+                        ///Start, end or normal dates: original behavior
+                        Text(calendarDate.getText())
+                            .foregroundStyle(event?.style.textColor ?? calendarDate.getTextColor())
+                            .font(calendarDate.font)
+                            .frame(width: w, height: h)
+                            .background(event?.style.backgroundColor ?? calendarDate.getBackColor())
+                            .clipShape(Circle())
+                            .overlay { isRangeEdge ? nil : event?.style.borderStyle }
+                    }
+                    
+                }
+                .frame(width: w, height: h)
+            }
+            .frame(height: cellSize)
             
         default:
             let event = calendarDate.events.first

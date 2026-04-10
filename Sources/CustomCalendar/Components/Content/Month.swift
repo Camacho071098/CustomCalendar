@@ -41,5 +41,18 @@ struct Month: View {
 
 #Preview {
 //    Month(isStartDate: true, manager: CalenderManager(calendarType: .calendarTwo), isLoading: .constant(false), monthOffset: 0)
-    Month(isStartDate: true, manager: CalenderManager(calendarType: .calendarThree), isLoading: .constant(false), monthOffset: 0)
+    Month(
+        isStartDate: true,
+        manager: CalenderManager(
+            colors: Colors(
+                selectedTextColor: .white,
+                backgroundColor: .yellow,
+                selectedBackColor: .accentColor,
+                betweenBackColor: .accentColor.opacity(0.12)
+            ),
+            calendarType: .calendarThree
+        ),
+        isLoading: .constant(false),
+        monthOffset: 0
+    )
 }
