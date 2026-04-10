@@ -34,6 +34,7 @@ public struct CustomCalendar: View {
             calendarType: calendarType
         )
         manager.tapDelegate = CalendarTapHandler(onTap: onTap)
+        manager.events = eventList.wrappedValue
         _manager = StateObject(wrappedValue: manager)
         
         self.enableHorizontalScroll = enableHorizontalScroll
@@ -115,8 +116,15 @@ class CalendarTapHandler: CalendarTapDelegate {
         currentDate: .constant(Date()),
         selectedDates: .constant([]),
         eventList: .constant([
+            Event(title: "Feriado", date: Calendar.current.date(byAdding: .day, value: 4, to: Date())!, style: EventStyle(backgroundColor: .accentColor.opacity(0.1), textColor: .accentColor, borderColor: .clear, borderStyle: AnyView(Color.clear))),
             
+            Event(title: "Feriado", date: Calendar.current.date(byAdding: .day, value: 5, to: Date())!, style: EventStyle(backgroundColor: .accentColor.opacity(0.1), textColor: .accentColor, borderColor: .clear, borderStyle: AnyView(Color.clear))),
+            
+            Event(title: "Feriado", date: Calendar.current.date(byAdding: .day, value: 6, to: Date())!, style: EventStyle(backgroundColor: .yellow.opacity(0.1), textColor: .yellow, borderColor: .yellow, borderStyle: AnyView(Circle().strokeBorder(.yellow, style: StrokeStyle(dash: [3]))))),
         ]),
+        colors: Colors(
+            
+        ),
         calendarType: .calendarThree
     )
 }
