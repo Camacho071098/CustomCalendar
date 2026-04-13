@@ -74,7 +74,7 @@ public struct CustomCalendar: View {
     }
     
     var drag: some Gesture {
-        DragGesture()
+        DragGesture(minimumDistance: 50)
             .onEnded { value in
                 let horizontal = abs(value.translation.width)
                 let vertical = abs(value.translation.height)
