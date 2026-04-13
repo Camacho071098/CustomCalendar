@@ -70,7 +70,7 @@ public struct CustomCalendar: View {
             }
         }
         .background(manager.colors.backgroundColor)
-        .gesture(enableHorizontalScroll ? drag : nil)
+        .simultaneousGesture(enableHorizontalScroll ? drag : nil)
     }
     
     var drag: some Gesture {
