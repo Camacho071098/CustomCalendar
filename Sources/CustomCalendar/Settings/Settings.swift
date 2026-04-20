@@ -22,8 +22,7 @@ class Settings {
         return date.formatted()
     }
     
-    static func getMonthDayFromDate(date: Date) -> Int {
-        let calendar = Calendar.current
+    static func getMonthDayFromDate(calendar: Calendar, date: Date) -> Int {
         let components = calendar.dateComponents([.month], from: date)
         
         return components.month! - 1
@@ -37,8 +36,8 @@ class Settings {
         return date.formatted(dateStyle)
     }
     
-    static func numberOfMonths(_ minDate: Date, _ maxDate: Date) -> Int {
-        let components = Calendar.current.dateComponents([.month], from: minDate, to: maxDate)
+    static func numberOfMonths(calendar: Calendar, _ minDate: Date, _ maxDate: Date) -> Int {
+        let components = calendar.dateComponents([.month], from: minDate, to: maxDate)
         
         return components.month! + 1
     }

@@ -11,22 +11,28 @@ import SwiftUI
     
     @Binding var monthOffset: Int
     @Binding var isPresented: Bool
+     
+     @State private var selectedMonth: Int
+     @State private var selectedYear: Int
+     
+     let yearsRange: [Int]
+     let months: [String]
     
      public init(calendarLocale: Locale, monthOffset: Binding<Int>, isPresented: Binding<Bool>, colors: Colors = Colors()) {
         _monthOffset = monthOffset
         _isPresented = isPresented
         
         manager = CalenderManager(colors: colors, locale: calendarLocale)
+         
+        let m = manager.calendar.component(.month, from: Date()) - 1
+        let y = manager.calendar.component(.year, from: Date())
+         
+         _selectedMonth = State(initialValue: m)
+         _selectedYear = State(initialValue: y)
+         
+         yearsRange = Array(y...(y + 2))
+         months = manager.calendar.monthSymbols
     }
-    
-    @State private var selectedMonth = Calendar.current.component(.month, from: Date()) - 1
-    @State private var selectedYear = Calendar.current.component(.year, from: Date())
-    
-    let yearsRange: [Int] = {
-        let currentYear = Calendar.current.component(.year, from: Date())
-        return Array(currentYear...(currentYear + 2))
-    }()
-    let months = Calendar.current.monthSymbols
     
     public var body: some View {
         ZStack {
@@ -82,15 +88,15 @@ import SwiftUI
             .animation(.easeInOut, value: isPresented)
         }
         .onAppear {
-            let currentDate = Calendar.current.date(byAdding: .month, value: monthOffset, to: firstDateMonth()) ?? Date()
-            selectedMonth = Calendar.current.component(.month, from: currentDate) - 1
-            selectedYear = Calendar.current.component(.year, from: currentDate)
+            let currentDate = manager.calendar.date(byAdding: .month, value: monthOffset, to: firstDateMonth()) ?? Date()
+            selectedMonth = manager.calendar.component(.month, from: currentDate) - 1
+            selectedYear = manager.calendar.component(.year, from: currentDate)
         }
     }
     
     private func updateMonthOffset() {
-        let yearDiff = selectedYear - Calendar.current.component(.year, from: firstDateMonth())
-        let monthDiff = selectedMonth - (Calendar.current.component(.month, from: firstDateMonth()) - 1)
+        let yearDiff = selectedYear - manager.calendar.component(.year, from: firstDateMonth())
+        let monthDiff = selectedMonth - (manager.calendar.component(.month, from: firstDateMonth()) - 1)
         let newOffset = (yearDiff * 12) + monthDiff
         
         if newOffset != monthOffset { monthOffset = newOffset }
@@ -99,8 +105,8 @@ import SwiftUI
     }
     
     private func firstDateMonth() -> Date {
-        var components = Calendar.current.dateComponents([.year, .month, .day], from: Date())
+        var components = manager.calendar.dateComponents([.year, .month, .day], from: Date())
         components.day = 1
-        return Calendar.current.date(from: components) ?? Date()
+        return manager.calendar.date(from: components) ?? Date()
     }
 }
