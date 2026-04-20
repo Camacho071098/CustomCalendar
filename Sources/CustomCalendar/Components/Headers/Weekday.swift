@@ -43,5 +43,5 @@ struct Weekday: View {
 }
 
 #Preview {
-    Weekday(manager: CalenderManager(), selectedDate: .constant(Date()))
+    Weekday(manager: CalenderManager(locale: .current), selectedDate: .constant(Date()))
 }

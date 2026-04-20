@@ -16,7 +16,7 @@ public struct CustomCalendar: View {
     
     private var enableHorizontalScroll: Bool
     
-    public init(monthOffset: Binding<Int>, isPickerPresented: Binding<Bool>, isLoading: Binding<Bool>, shouldClearData: Binding<Bool> = .constant(false), currentDate: Binding<Date>, selectedDates: Binding<[Date]>, eventList: Binding<[Event]>, colors: Colors = Colors(), disableBeforeTodayDates: Bool = true, calendarType: CalendarType = .calendarOne, enableHorizontalScroll: Bool = false, onTap: ((Date) -> Void)? = nil) {
+    public init(calendarLocale: Locale = .current, monthOffset: Binding<Int>, isPickerPresented: Binding<Bool>, isLoading: Binding<Bool>, shouldClearData: Binding<Bool> = .constant(false), currentDate: Binding<Date>, selectedDates: Binding<[Date]>, eventList: Binding<[Event]>, colors: Colors = Colors(), disableBeforeTodayDates: Bool = true, calendarType: CalendarType = .calendarOne, enableHorizontalScroll: Bool = false, onTap: ((Date) -> Void)? = nil) {
         _monthOffset = monthOffset
         _isPickerPresented = isPickerPresented
         _currentDate = currentDate
@@ -28,6 +28,7 @@ public struct CustomCalendar: View {
         let manager = CalenderManager(
             colors: colors,
             calendar: Calendar.current,
+            locale: calendarLocale,
             minimumDate: Date(),
             maximumDate: Calendar.current.date(byAdding: .month, value: 2, to: Date())!,
             disableBeforeTodayDates: disableBeforeTodayDates,

@@ -27,7 +27,7 @@ public struct WeekCalendar: View {
         return ((selectedYear - currentYear) * 12) + (selectedMonth - currentMonth)
     }
     
-    public init(isLoading: Binding<Bool>, colors: Colors = Colors(), selectedDate: Binding<Date?>, startDate: Date = Date(), indicators: Binding<[Date: DayIndicator]>, onTap: ((Date) -> Void)? = nil) {
+    public init(calendarLocale: Locale = .current, isLoading: Binding<Bool>, colors: Colors = Colors(), selectedDate: Binding<Date?>, startDate: Date = Date(), indicators: Binding<[Date: DayIndicator]>, onTap: ((Date) -> Void)? = nil) {
         _isLoading = isLoading
         _indicators = indicators
         _selectedDate = selectedDate
@@ -35,6 +35,7 @@ public struct WeekCalendar: View {
         let manager = CalenderManager(
             startDate: startDate,
             colors: colors,
+            locale: calendarLocale,
             calendarType: .weekCalendar,
         )
         manager.tapDelegate = CalendarTapHandler(onTap: onTap)

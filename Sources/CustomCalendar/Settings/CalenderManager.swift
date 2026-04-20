@@ -44,13 +44,15 @@ class CalenderManager: ObservableObject {
     var calendarType: CalendarType
     var daysPerWeek: Int
     
-    init(selectedDate: Date? = nil, startDate: Date? = nil, endDate: Date? = nil, colors: Colors = Colors(), calendar: Foundation.Calendar = Calendar.current, minimumDate: Date = Date(), maximumDate: Date = Date(), disabledAfterDate: Date? = nil, disableBeforeTodayDates: Bool = true, indicator: DayIndicator = .none, daysPerWeek: Int = 7, calendarType: CalendarType = .calendarOne) {
+    init(selectedDate: Date? = nil, startDate: Date? = nil, endDate: Date? = nil, colors: Colors = Colors(), calendar: Foundation.Calendar = Calendar.current, locale: Locale, minimumDate: Date = Date(), maximumDate: Date = Date(), disabledAfterDate: Date? = nil, disableBeforeTodayDates: Bool = true, indicator: DayIndicator = .none, daysPerWeek: Int = 7, calendarType: CalendarType = .calendarOne) {
         self.selectedDate = selectedDate
         self.startDate = startDate
         self.endDate = endDate
         self.colors = colors
+        
         self.calendar = calendar
         self.calendar.timeZone = TimeZone(secondsFromGMT: 0)!
+        self.calendar.locale = locale
 
         self.minimumDate = minimumDate
         self.maximumDate = maximumDate
