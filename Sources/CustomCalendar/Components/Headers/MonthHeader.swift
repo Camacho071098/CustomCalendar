@@ -32,5 +32,9 @@ struct MonthHeader: View {
 }
 
 #Preview {
-    MonthHeader(manager: CalenderManager(), monthOffset: .constant(0), isPickerPresented: .constant(false))
+    MonthHeader(
+        manager: CalenderManager(locale: .current),
+        monthOffset: .constant(0),
+        isPickerPresented: .constant(false)
+    )
 }

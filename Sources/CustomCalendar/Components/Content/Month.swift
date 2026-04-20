@@ -50,6 +50,7 @@ struct Month: View {
                 selectedBackColor: .accentColor,
                 betweenBackColor: .accentColor.opacity(0.12)
             ),
+            locale: .current,
             calendarType: .calendarThree
         ),
         isLoading: .constant(false),

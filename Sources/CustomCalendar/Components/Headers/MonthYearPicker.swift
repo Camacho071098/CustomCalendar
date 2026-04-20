@@ -12,11 +12,11 @@ import SwiftUI
     @Binding var monthOffset: Int
     @Binding var isPresented: Bool
     
-    public init(monthOffset: Binding<Int>, isPresented: Binding<Bool>, colors: Colors = Colors()) {
+     public init(calendarLocale: Locale, monthOffset: Binding<Int>, isPresented: Binding<Bool>, colors: Colors = Colors()) {
         _monthOffset = monthOffset
         _isPresented = isPresented
         
-        manager = CalenderManager(colors: colors)
+        manager = CalenderManager(colors: colors, locale: calendarLocale)
     }
     
     @State private var selectedMonth = Calendar.current.component(.month, from: Date()) - 1
