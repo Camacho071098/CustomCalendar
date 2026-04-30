@@ -13,40 +13,57 @@ struct DayCell: View {
     var body: some View {
         switch calendarDate.manager.calendarType {
         case .calendarTwo:
+            let isHoliday = (calendarDate.events.count == 1) && (calendarDate.events.first?.title == "Feriado")
+            
             VStack(spacing: 0) {
                 Divider()
                 
                 Text(calendarDate.getText())
                     .frame(width: cellSize)
                     .foregroundStyle(calendarDate.getTextColor())
-                    .background(calendarDate.getBackColor())
+                    .background(.clear)
                     .font(calendarDate.font)
                     .strikethrough(calendarDate.isBeforeToday, color: calendarDate.getTextColor())
                 
                 ScrollView(.vertical) {
                     VStack(alignment: .center, spacing: 2) {
-                        ForEach(calendarDate.events, id: \.id) { event in
-                            Text(event.title)
-                                //TODO: Comment if holiday should not use all cell height
-                                //.frame(maxWidth: .infinity, alignment: .center)
-                                //.frame(height: calendarDate.events.count == 1 && calendarDate.events.first?.title == "Feriado" ? cellSize * 1.2 : .infinity, alignment: .center)
+                        if let holiday = calendarDate.events.first, holiday.title == "Feriado" {
+                            Spacer()
+                            
+                            Text(holiday.title)
                                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-                                .foregroundStyle(event.style.textColor)
+                                .foregroundStyle(holiday.style.textColor)
                                 .font(Fonts(customSize: 8).regularTextFont)
-                                .background(event.style.backgroundColor)
+                                .background(holiday.style.backgroundColor)
                                 .clipShape(RoundedRectangle(cornerRadius: 2))
-                                .overlay {
-                                    event.style.borderStyle
-                                }
-                                .frame(height: .infinity)
+                                .overlay { holiday.style.borderStyle }
+                            
+                            Spacer()
+                        }
+                        else {
+                            ForEach(calendarDate.events, id: \.id) { event in
+                                Text(event.title)
+                                    //TODO: Comment if holiday should not use all cell height
+                                    //.frame(maxWidth: .infinity, alignment: .center)
+                                    //.frame(height: calendarDate.events.count == 1 && calendarDate.events.first?.title == "Feriado" ? cellSize * 1.2 : .infinity, alignment: .center)
+                                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                                    .foregroundStyle(event.style.textColor)
+                                    .font(Fonts(customSize: 8).regularTextFont)
+                                    .background(event.style.backgroundColor)
+                                    .clipShape(RoundedRectangle(cornerRadius: 2))
+                                    .overlay { event.style.borderStyle }
+                                    .frame(height: .infinity)
+                            }
                         }
                     }
-                    .frame(maxHeight: .infinity, alignment: .top)
+                    .frame(maxHeight: .infinity, alignment: isHoliday ? .center : .top)
                     .padding(2)
                 }
 
             }
             .frame(height: cellSize * 1.8)
+            .background(isHoliday ? calendarDate.manager.colors.holidayBackColor : .clear)
+            .clipShape(RoundedRectangle(cornerRadius: 2))
             
         case .weekCalendar:
             Text(calendarDate.getText())
