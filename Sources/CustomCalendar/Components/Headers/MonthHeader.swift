@@ -15,7 +15,7 @@ struct MonthHeader: View {
         HStack {
             
             Image(.arrowLeft)
-                .foregroundStyle(manager.colors.selectedTextColor)
+                .foregroundStyle(manager.colors.monthArrowColor)
                 .onTapGesture { monthOffset -= 1 }
             
             Text(manager.monthHeader(monthOffset: monthOffset))
@@ -25,7 +25,7 @@ struct MonthHeader: View {
                 .onTapGesture { isPickerPresented = true }
             
             Image(.arrowRight)
-                .foregroundStyle(manager.colors.selectedTextColor)
+                .foregroundStyle(manager.colors.monthArrowColor)
                 .onTapGesture { monthOffset += 1 }
         }
     }
