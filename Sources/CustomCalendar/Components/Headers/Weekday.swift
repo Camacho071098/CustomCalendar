@@ -32,7 +32,7 @@ struct Weekday: View {
             ForEach(Array(weekdays.enumerated()), id: \.offset) { index, weekday in
                 let isSelected = (index == selectedWeekdayIndex)
                 
-                Text(weekday)
+                Text(weekday.lowercased())
                     .font(isSelected ? manager.fonts.selectedTextFont : manager.fonts.regularTextFont)
                     .foregroundStyle(isSelected ? manager.colors.selectedTextColor : manager.colors.weekdayTextColor)
             }

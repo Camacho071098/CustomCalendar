@@ -18,7 +18,7 @@ struct MonthHeader: View {
                 .foregroundStyle(manager.colors.monthArrowColor)
                 .onTapGesture { monthOffset -= 1 }
             
-            Text(manager.monthHeader(monthOffset: monthOffset))
+            Text(manager.monthHeader(monthOffset: monthOffset).lowercased())
                 .font(manager.fonts.headerTextFont)
                 .foregroundStyle(manager.colors.normalTextColor)
                 .frame(maxWidth: .infinity)
